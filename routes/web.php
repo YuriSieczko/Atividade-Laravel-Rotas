@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/alunos')->group(function () {
     Route::get('/', function () {
         $dados = array(
-            1 => "Jorge",
+            1 => "Augusto",
             2 => "Cintia",
             3 => "Diogo",
             4 => "Alice",
@@ -63,7 +63,7 @@ Route::prefix('/alunos')->group(function () {
         );
 
         $valor = "<ul>";
-        for ($a = 0; $a < count($dados); $a++) {
+        for ($a = 0; $a <= count($dados); $a++) {
             if ($matricula == $a) {
                 $valor = $valor . "<li>$dados[$a]</li>";
             }
@@ -115,7 +115,7 @@ Route::prefix('/notas')->group(function () {
             array(
                 "matricula" => 2,
                 "aluno" => "Auri",
-                "nota" => 0,
+                "nota" => 4,
             ),
             array(
                 "matricula" => 3,
@@ -161,7 +161,7 @@ Route::prefix('/notas')->group(function () {
             array(
                 "matricula" => 3,
                 "aluno" => "Faria",
-                "nota" => 3.69,
+                "nota" => 10,
             ),
             array(
                 "matricula" => 4,
@@ -254,7 +254,7 @@ Route::prefix('/notas')->group(function () {
             array(
                 "matricula" => 3,
                 "aluno" => "Faria",
-                "nota" => 3.69,
+                "nota" => 10,
             ),
             array(
                 "matricula" => 4,
@@ -274,11 +274,9 @@ Route::prefix('/notas')->group(function () {
 
             if ($chave['nota'] >= $A) {
                 $chave['nota'] = 'A';
-            }
-            else if ($chave['nota'] >= $B) {
+            } else if ($chave['nota'] >= $B) {
                 $chave['nota'] = 'B';
-            }
-            else if ($chave['nota'] >= $C) {
+            } else if ($chave['nota'] >= $C) {
                 $chave['nota'] = 'C';
             } else {
                 $chave['nota'] = 'C';
@@ -292,5 +290,60 @@ Route::prefix('/notas')->group(function () {
 
     })->where('A', '[0-9]')->where('B', '[0-9]')->where('C', '[0-9]');
 
+    Route::post('/conceito', function (Request $request) {
 
+            $dados = array(
+                array(
+                    "matricula" => 1,
+                    "aluno" => "Joana",
+                    "nota" => 10,
+                ),
+                array(
+                    "matricula" => 2,
+                    "aluno" => "Auri",
+                    "nota" => 8.9,
+                ),
+                array(
+                    "matricula" => 3,
+                    "aluno" => "Faria",
+                    "nota" => 10,
+                ),
+                array(
+                    "matricula" => 4,
+                    "aluno" => "Alive",
+                    "nota" => 9,
+                ),
+                array(
+                    "matricula" => 5,
+                    "aluno" => "Pedron",
+                    "nota" => 7,
+                )
+            );
+
+            $request = Request::instance();
+            $A = $request["A"];
+            $B = $request["B"];
+            $C = $request["C"];
+
+            $valor = "<ul>";
+
+            foreach ($dados as $chave) {
+
+                if ($chave['nota'] >= $A) {
+                    $chave['nota'] = 'A';
+                } else if ($chave['nota'] >= $B) {
+                    $chave['nota'] = 'B';
+                } else if ($chave['nota'] >= $C) {
+                    $chave['nota'] = 'C';
+                } else {
+                    $chave['nota'] = 'C';
+                }
+
+
+                $valor .= "<li>{$chave["matricula"]} {$chave["aluno"]} {$chave["nota"]}</li>";
+            }
+            $valor .= "</ul>";
+            return $valor;
+
+    });
 });
